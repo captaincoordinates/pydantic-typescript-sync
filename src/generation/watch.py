@@ -1,15 +1,15 @@
 import time
 from argparse import ArgumentParser
-from subprocess import Popen
 from logging import getLogger
-
-from generation.debouncer import debounce
+from subprocess import Popen
 
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 
+from generation.debouncer import debounce
 
 logger = getLogger(__file__)
+
 
 def generate(search_path: str, output_path: str):
     # execute within new process to avoid module caching

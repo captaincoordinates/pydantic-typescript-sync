@@ -3,7 +3,6 @@ import sys
 
 from generation.settings import GeneratorSettings
 
-
 settings = GeneratorSettings()
 logging_levels = {value: key for key, value in logging._levelToName.items()}
 logging_level_name = settings.LOG_LEVEL.upper()

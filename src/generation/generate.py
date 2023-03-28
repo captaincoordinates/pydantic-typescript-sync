@@ -2,14 +2,14 @@ from argparse import ArgumentParser
 from glob import glob
 from importlib import import_module
 from inspect import isclass
+from logging import getLogger
 from os import path
 from re import escape, sub
 from sys import path as syspath
-from logging import getLogger
+from typing import Dict
 
 from pydantic import BaseModel
 from pydantic2ts import generate_typescript_defs
-
 
 logger = getLogger(__file__)
 
@@ -24,7 +24,7 @@ if __name__ == "__main__":
         type=str,
     )
     args = vars(parser.parse_args())
-    types = {}
+    types: Dict[str, str] = {}
     for file_path in [
         filename
         for filename in glob(path.join(args["search_path"], "**", "*.py"), recursive=True)
@@ -48,7 +48,8 @@ if __name__ == "__main__":
             module = import_module(module_str)
         except ImportError as e:
             logger.warning(
-                f"unable to import type class from module '{module_str}', so skipping. Some dependencies may be missing: {e}"
+                f"unable to import type class from module '{module_str}', "
+                f"so skipping. Some dependencies may be missing: {e}"
             )
             continue
 
@@ -57,9 +58,7 @@ if __name__ == "__main__":
             **{
                 module_str: module_name
                 for type_class in module.__dict__.values()
-                if isclass(type_class)
-                and type_class is not BaseModel
-                and issubclass(type_class, BaseModel)
+                if isclass(type_class) and type_class is not BaseModel and issubclass(type_class, BaseModel)
             },
         }
 
