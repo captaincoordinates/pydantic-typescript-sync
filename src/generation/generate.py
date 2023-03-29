@@ -42,11 +42,12 @@ if __name__ == "__main__":
             if part
         ]
         module_str = f"{path.sep.join(path_parts).replace(path.sep, '.')}"
-        if module_path not in syspath:
+        if args["search_path"] not in syspath:
             syspath.append(args["search_path"])
         try:
+            logger.debug(f"importing {module_str}, with sys.path {syspath}")
             module = import_module(module_str)
-        except ImportError as e:
+        except Exception as e:
             logger.warning(
                 f"unable to import type class from module '{module_str}', "
                 f"so skipping. Some dependencies may be missing: {e}"

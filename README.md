@@ -14,4 +14,11 @@ Example usage is shown [here](https://github.com/captaincoordinates/fastapi-webs
 
 `/input` should bind to the top-level Python source directory containing Pydantic models. Pydantic models will be automatically discovered within this directory. `/output` should bind to a location within a TypeScript source directory.
 
-Pydantic models might reference types outside the Python Standard Library, and these dependencies must be installed within the pydantic-typescript-sync container to support TypeScript generation. This utility will search `/input` for any `requirements.txt` files and install those dependencies during startup. This may not be an ideal approach, and other methods of identifying Python dependencies are not yet supported. This approach will be reviewed as time permits (suggestions and PRs welcome).
+### Dependencies
+
+Pydantic models might reference types outside the Python Standard Library, and these dependencies must be installed within the pydantic-typescript-sync container to support TypeScript generation for those Pydantic models. Log messages such as the following indicate that a Pydantic model could not be imported
+>WARNING:/tsgen/generation/generate.py:unable to import type class from module 'app.models.push_report', so skipping. Some dependencies may be missing: No module named 'starlette'
+
+In this example the `starlette` dependency is preventing the model from being imported and must be installed.
+
+This utility will search `/input` for any `requirements.txt` files and install those dependencies during startup. This may not be an ideal approach, and other methods of identifying Python dependencies are not yet supported. This approach will be reviewed as time permits (suggestions and PRs welcome).

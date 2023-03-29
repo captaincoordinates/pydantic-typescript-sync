@@ -8,6 +8,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get -y update --fix-missing \
     && apt-get install --no-install-recommends -y \
     curl \
+    jq \
     && apt-get clean
 
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
